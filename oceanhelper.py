@@ -5,7 +5,7 @@ import discord
 from discord.ext import commands
 from discord.ext.commands import has_permissions
 
-from files.backend.webrequests import DataIO, Config
+from webrequests import DataIO, Config
 
 intents = discord.Intents().all()
 Client = commands.Bot(command_prefix="$", intents=intents)
