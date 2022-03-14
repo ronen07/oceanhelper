@@ -2,9 +2,6 @@ import time
 import discord
 from discord.ext import commands
 from discord.ext.commands import has_permissions
-from dotenv import load_dotenv
-
-load_dotenv()
 
 intents = discord.Intents().all()
 Client = commands.Bot(command_prefix="$", intents=intents)
@@ -108,4 +105,4 @@ class moderation(commands.Cog):
 
 if __name__ == "__main__":
 
-    bot.run("TOKEN")
+    bot.run("OTUyNzA4OTc2Njg3MDgzNTMw.Yi59YA.xdanwPtQcGy5AfAU7BI_jo3t_As")
