@@ -12,7 +12,7 @@ intents = discord.Intents.default()
 intents.members = True
 bot = commands.Bot(command_prefix='.', intents=intents, help_command=None)
 bot.owner_id = 933369720361586699
-status = "with the Ocean"
+status = "for Rule Breakers"
 
 
 @bot.event
@@ -21,7 +21,8 @@ async def on_ready():
 
     print("Bot online")
     # this line automatically makes the bot go into "playing a game" mode.
-    await bot.change_presence(activity=discord.Game(f"{status}"))
+    activity = discord.Activity(type=discord.ActivityType.watching, name=f"{status}")
+    await bot.change_presence(status=discord.Status.idle, activity=activity)
 
 
 class restricted(commands.Cog):
