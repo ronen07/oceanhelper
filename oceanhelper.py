@@ -1,65 +1,25 @@
-import threading
 import time
-from itertools import cycle
 import discord
 from discord.ext import commands
 from discord.ext.commands import has_permissions
+from dotenv import load_dotenv
 
-from webrequests import DataIO, Config
+load_dotenv()
 
 intents = discord.Intents().all()
 Client = commands.Bot(command_prefix="$", intents=intents)
-
-status = cycle(['status1', 'status2', '...'])
-
 intents = discord.Intents.default()
 intents.members = True
-
 bot = commands.Bot(command_prefix='.', intents=intents, help_command=None)
 bot.owner_id = 933369720361586699
-botdata = {}
-pingcooldown = []
-
 status = "with the Ocean"
-api_key_dev = ""
-api_key_stable = ""
-updatesuccess = True
-
-
-def syncdata(bot):
-    global botdata
-
-    listener = Config(bot).listener(port=1999)
-
-    while True:
-        try:
-            conn = listener.accept()
-            data = conn.recv()
-
-            if data == "close":
-                listener.close()
-                break
-
-            botdata = data
-        except:
-            pass
 
 
 @bot.event
 async def on_ready():
     global botdata
-    global updatesuccess
 
     print("Bot online")
-
-    dataio = DataIO(bot)
-    botdata = dataio.createconfig("other")
-
-    for guild in bot.guilds:
-        botdata[dataio.gethash(bytes(str(guild.id), "utf-8"))] = dataio.createconfig("server")
-
-    botdata = dataio.loadconfig()
-
     # this line automatically makes the bot go into "playing a game" mode.
     await bot.change_presence(activity=discord.Game(f"{status}"))
 
@@ -136,8 +96,8 @@ class moderation(commands.Cog):
         global botdata
         if ctx.author.id == bot.owner_id:
             if module == "admin":
-                ctx.send("`.stats` \n"
-                         "`.exec <py code block>` \n")
+                ctx.send(embed=discord.Embed(title="Admin Commands", color=discord.Colour.dark_blue(),
+                                             add_field="`.stats` \n `.exec <py code block>` \n"))
         else:
             await ctx.send(embed=discord.Embed(
                 title="Help Command", color=discord.Colour.dark_blue(),
@@ -146,10 +106,5 @@ class moderation(commands.Cog):
 
 
 if __name__ == "__main__":
-    botdata = DataIO(bot).createconfig("other")
-    DataIO(bot).savetofile(botdata)
-    bot.add_cog(restricted(bot))
-
-    threading.Thread(target=syncdata, args=(bot,)).start()
 
     bot.run("TOKEN")
