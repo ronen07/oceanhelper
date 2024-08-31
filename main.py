@@ -5,7 +5,6 @@ from discord.ext.commands import has_permissions
 
 intents = discord.Intents().all()
 Client = commands.Bot(command_prefix="$", intents=intents)
-intents = discord.Intents.default()
 intents.members = True
 bot = commands.Bot(command_prefix='.', intents=intents, help_command=None)
 bot.owner_id = 933369720361586699
